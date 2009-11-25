@@ -117,13 +117,17 @@ urlpatterns += never_cache_patterns('reviewboard.webapi.json',
      'review_request_updated'),
 
     # Reviews
+    # Save Review
     (r'^reviewrequests/(?P<review_request_id>[0-9]+)/reviews/draft/save/$',
      'review_draft_save'),
+    # Publish Review
     (r'^reviewrequests/(?P<review_request_id>[0-9]+)/reviews/draft/publish/$',
      'review_draft_save',
      {'publish': True}),
+    # Delete Review
     (r'^reviewrequests/(?P<review_request_id>[0-9]+)/reviews/draft/delete/$',
      'review_draft_delete'),
+     
     (r'^reviewrequests/(?P<review_request_id>[0-9]+)/reviews/draft/comments/$',
      'review_draft_comments'),
     (r'^reviewrequests/(?P<review_request_id>[0-9]+)/reviews/draft/$',

@@ -1045,9 +1045,12 @@ def review_draft_save(request, review_request_id, publish=False):
 @webapi_login_required
 @require_POST
 def review_draft_delete(request, review_request_id):
+    """
+    Make a call to update in_progress flag, clears reviews if discarded
+    """
     review_request = get_object_or_404(ReviewRequest, pk=review_request_id)
     review = review_request.get_pending_review(request.user)
-
+    
     if review:
         review.delete()
         return WebAPIResponse(request)

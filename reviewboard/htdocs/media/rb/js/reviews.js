@@ -813,7 +813,8 @@ $.reviewForm = function(review) {
                         .val("Discard Review")
                         .click(function(e) {
                             review.deleteReview({
-                                buttons: buttons
+                                buttons: buttons,
+                                success: $.funcQueue("reviewForm").next
                             });
                         }),
                     $('<input type="button"/>')

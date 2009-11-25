@@ -153,7 +153,7 @@ class ReviewManager(ConcurrencyManager):
     load. This prevents errors and lost data.
     """
 
-    def get_pending_review(self, review_request, user):
+    def get_pending_review(self, review_request, user, get_all=False):
         """Returns a user's pending review on a review request.
 
         This will handle fixing duplicate reviews if more than one pending
@@ -162,6 +162,9 @@ class ReviewManager(ConcurrencyManager):
         if not user.is_authenticated():
             return None
 
+        if get_all:
+            return self.get_all_pending_review(review_request, user)
+        
         query = self.filter(user=user,
                             review_request=review_request,
                             public=False,
@@ -169,7 +172,6 @@ class ReviewManager(ConcurrencyManager):
         query = query.order_by("timestamp")
 
         reviews = list(query)
-
         if len(reviews) == 0:
             return None
         elif len(reviews) == 1:
@@ -211,3 +213,14 @@ class ReviewManager(ConcurrencyManager):
             review.delete()
 
         return master_review
+    
+    def get_all_pending_review(self, review_request, user):
+        """
+        Gets pending reviews from all the users, order by user
+        """
+        query = self.filter(review_request=review_request,
+                            public=False,
+                            base_reply_to__isnull=True)
+        
+        query = query.order_by("user")
+        return query

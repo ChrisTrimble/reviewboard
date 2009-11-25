@@ -249,8 +249,7 @@ class ReviewRequest(models.Model):
                                                  blank=True)
     shipit_count = models.IntegerField(_("ship-it count"), default=0,
                                        null=True)
-
-
+    
     # Set this up with the ReviewRequestManager
     objects = ReviewRequestManager()
 
@@ -376,12 +375,14 @@ class ReviewRequest(models.Model):
 
         return None
 
-    def get_pending_review(self, user):
+    def get_pending_review(self, user, get_all=False):
         """
         Returns the pending review owned by the specified user, if any.
         This will return an actual review, not a reply to a review.
+        
+        get_all=True, gets reviews from all the user
         """
-        return Review.objects.get_pending_review(self, user)
+        return Review.objects.get_pending_review(self, user, get_all)
 
     def get_last_activity(self):
         """Returns the last public activity information on the review request.

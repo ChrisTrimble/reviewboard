@@ -108,7 +108,8 @@ def review_detail(request, review_request_id,
 
     reviews = review_request.get_public_reviews()
     review = review_request.get_pending_review(request.user)
-
+    # Get all pending reviews
+    all_pending_reviews = list(review_request.get_pending_review(request.user, get_all=True).exclude(user=request.user))
     if request.user.is_authenticated():
         # If the review request is public and pending review and if the user
         # is logged in, mark that they've visited this review request.
@@ -216,7 +217,6 @@ def review_detail(request, review_request_id,
         })
 
     entries.sort(key=lambda item: item['timestamp'])
-
     response = render_to_response(template_name, RequestContext(request, {
         'draft': draft,
         'review_request': review_request,
@@ -229,6 +229,7 @@ def review_detail(request, review_request_id,
         'upload_screenshot_form': UploadScreenshotForm(),
         'scmtool': repository.get_scmtool(),
         'PRE_CREATION': PRE_CREATION,
+        'all_pending_reviews': all_pending_reviews,
     }))
     set_etag(response, etag)
 

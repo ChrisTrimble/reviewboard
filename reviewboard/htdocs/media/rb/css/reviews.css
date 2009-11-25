@@ -19,7 +19,6 @@
   background-image: url('../images/review_request_box_bottom_bg.png');
 }
 
-
 /****************************************************************************
  * Review Request Box
  ****************************************************************************/
@@ -858,6 +857,21 @@
   z-index: 1000;
 }
 
+#review-progress-banner {
+  padding-bottom: 3.0em;
+}
+
+#review-progress-banner .banner {
+  background: #FFFF99;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
 
 /****************************************************************************
  * Tooltips
