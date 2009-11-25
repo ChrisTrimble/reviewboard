@@ -1,0 +1,53 @@
+<script type="text/javascript" src="{{MEDIA_URL}}rb/js/keyboard_shortcuts.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}rb/js/thickbox.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		var kb_shortcuts = '' ;
+		kb_shortcuts += '<table id="kb_shortcuts">' ;
+		for (var i = 0; i < gActions.length; i++) { 
+			kb_shortcuts += '<tr>';
+			kb_shortcuts += '<td width="150">' + gActions[i].description + '</td>';
+			kb_shortcuts += '<td width="100">' +  makeDisplayKeys(gActions[i].keys) + '</td>';
+			kb_shortcuts += '</tr>';
+		}
+		$("#help").append(kb_shortcuts) ;
+
+		$(document).keyup(function(e) {
+			var KeyID = (window.event) ? event.keyCode : e.keyCode;
+			if (KeyID == 191) {
+				displayHelpScreen();
+			}
+			if (KeyID == 27) {
+				closeHelpScreen();
+			}
+	    });
+	});
+	
+	function displayHelpScreen() {
+	    tb_show('Keyboard Shortcuts', '#TB_inline?height=300&width=350&inlineId=help', null);
+	}
+
+	function closeHelpScreen() {
+		tb_remove();
+	}
+
+	// Converts a String from abc to a, b, c -- More readable format.
+	function makeDisplayKeys(keys){
+		var display_keys = "";
+		for(i=0;i<keys.length;i++){
+			if (i==0){
+				display_keys += ""+keys.charAt(i);
+			}else{
+				display_keys += ", "+keys.charAt(i);
+			}		
+		}
+		return display_keys;
+	}
+	
+</script>
+
+<link rel="stylesheet" href="{{MEDIA_URL}}rb/css/thickbox.css"
+	type="text/css" media="screen" />
+
+<div id="help" style="display:none;visibility:hidden;"></div>
