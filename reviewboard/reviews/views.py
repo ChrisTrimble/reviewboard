@@ -405,6 +405,7 @@ def diff(request, review_request_id, revision=None, interdiff_revision=None,
     review_request = get_object_or_404(ReviewRequest, pk=review_request_id)
     diffset = _query_for_diff(review_request, request.user, revision)
 
+    all_pending_reviews = None
     interdiffset = None
     interdiffset_id = None
     review = None
@@ -421,6 +422,9 @@ def diff(request, review_request_id, revision=None, interdiff_revision=None,
     # current user.
     review = review_request.get_pending_review(request.user)
     draft = review_request.get_draft(request.user)
+
+    if request.user.is_authenticated():
+        all_pending_reviews = list(review_request.get_all_pending_review().exclude(user=request.user))
 
     repository = review_request.repository
 
@@ -447,6 +451,7 @@ def diff(request, review_request_id, revision=None, interdiff_revision=None,
         'upload_screenshot_form': UploadScreenshotForm(),
         'scmtool': repository.get_scmtool(),
         'last_activity_time': last_activity_time,
+        'all_pending_reviews': all_pending_reviews,
         'specific_diff_requested': revision is not None or
                                    interdiff_revision is not None,
     }, template_name)
