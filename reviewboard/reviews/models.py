@@ -253,7 +253,6 @@ class ReviewRequest(models.Model):
     # Set this up with the ReviewRequestManager
     objects = ReviewRequestManager()
 
-
     def get_bug_list(self):
         """
         Returns a sorted list of bugs associated with this review request.
@@ -375,15 +374,19 @@ class ReviewRequest(models.Model):
 
         return None
 
-    def get_pending_review(self, user, get_all=False):
+    def get_pending_review(self, user):
         """
         Returns the pending review owned by the specified user, if any.
         This will return an actual review, not a reply to a review.
-        
-        get_all=True, gets reviews from all the user
         """
-        return Review.objects.get_pending_review(self, user, get_all)
+        return Review.objects.get_pending_review(self, user)
 
+    def get_all_pending_review(self):
+        """
+        Returns all the pending review owned by any user
+        """
+        return Review.objects.get_all_pending_review(self)
+    
     def get_last_activity(self):
         """Returns the last public activity information on the review request.
 

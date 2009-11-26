@@ -9,14 +9,6 @@
 {% block bodytag %}
 {{block.super}}
 
-<div id="review-banner"{% if not review %} style="display: none;"{% endif %}>
- <div class="banner">
-  <h1>{% trans "You have a pending review." %}</h1>
-  <input id="review-banner-edit" type="button" value="{% trans "Edit Review" %}" />
-  <input id="review-banner-publish" type="button" value="{% trans "Publish" %}" />
-  <input id="review-banner-discard" type="button" value="{% trans "Discard" %}" />
- </div>
-</div>
 <div id="review-progress-banner"{% if not all_pending_reviews %} style="display: none;"{% endif %}>
  <div class="banner">
   <h1>{% trans "Review is in progress by : " %}
@@ -26,6 +18,14 @@
   		{% endif %}
   {% endfor %}
   </h1>
+ </div>
+</div>
+<div id="review-banner"{% if not review %} style="display: none;"{% endif %}>
+ <div class="banner">
+  <h1>{% trans "You have a pending review." %}</h1>
+  <input id="review-banner-edit" type="button" value="{% trans "Edit Review" %}" />
+  <input id="review-banner-publish" type="button" value="{% trans "Publish" %}" />
+  <input id="review-banner-discard" type="button" value="{% trans "Discard" %}" />
  </div>
 </div>
 {% endblock %}
