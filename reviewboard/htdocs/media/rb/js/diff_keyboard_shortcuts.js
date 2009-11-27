@@ -66,5 +66,13 @@ var gActions = [
         keys: "GU:",
         onPress: function() {},
     	description: "Go to footer"
+    },
+
+    { // Go to footer
+        keys: "?",
+        onPress: function() {
+    		displayHelpScreen();
+    	},
+    	description: "Show Help"
     }
 ];
