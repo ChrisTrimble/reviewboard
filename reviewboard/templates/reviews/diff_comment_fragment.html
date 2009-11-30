@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load djblets_utils %}
 {% load reviewtags %}
 {% load difftags %}
@@ -17,6 +18,9 @@
      (Diff revisions {{comment.filediff.diffset.revision}} - {{comment.interfilediff.diffset.revision}})
 {% else %}
      (Diff revision {{comment.filediff.diffset.revision}})
+{% endif %}
+{% if comment.blockit %}
+	<span class="gr">{% trans "Marked as Blocker" %}</span>
 {% endif %}
     </span>
    </th>

@@ -1,13 +1,14 @@
 RB = {};
 
 RB.DiffComment = function(filediff, interfilediff, beginLineNum, endLineNum,
-                          textOnServer) {
+                          textOnServer, blockit) {
     this.filediff = filediff;
     this.interfilediff = interfilediff;
     this.beginLineNum = beginLineNum;
     this.endLineNum = endLineNum;
     this.text = textOnServer || "";
     this.saved = (textOnServer != undefined);
+    this.blockit = blockit;
 
     return this;
 }
@@ -44,7 +45,8 @@ $.extend(RB.DiffComment.prototype, {
             data: {
                 action: "set",
                 num_lines: this.getNumLines(),
-                text: this.text
+                text: this.text,
+                blockit: this.blockit
             },
             success: function() {
                 self.saved = true;

@@ -152,7 +152,7 @@ function DiffCommentBlock(beginRow, endRow, beginLineNum, endLineNum,
             var comment = comments[i];
 
             if (comment.localdraft) {
-                this._createDraftComment(comment.text);
+                this._createDraftComment(comment.text, comment.blockit);
             } else {
                 this.comments.push(comment);
             }
@@ -273,7 +273,7 @@ $.extend(DiffCommentBlock.prototype, {
             .close();
     },
 
-    _createDraftComment: function(textOnServer) {
+    _createDraftComment: function(textOnServer, blockit) {
         if (this.draftComment != null) {
             return;
         }
@@ -282,7 +282,7 @@ $.extend(DiffCommentBlock.prototype, {
         var el = this.el;
         var comment = new RB.DiffComment(this.filediff, this.interfilediff,
                                          this.beginLineNum, this.endLineNum,
-                                         textOnServer);
+                                         textOnServer, blockit);
 
         $.event.add(comment, "textChanged", function() {
             self.updateTooltip();

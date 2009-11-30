@@ -73,6 +73,12 @@
    <dd>
     <pre class="editable comment-editable" id="diff-comment-{{comment.id}}">{{comment.text|escape}}</pre>
 
+	<script type="text/javascript">
+		// Marked as Unblock, couldn't be Shipped 
+        if(parseInt({{comment.blockit}}) == 1){
+        	$("#id_shipit").attr("disabled",true);
+        }       
+	</script> 
 {% comment %}
     <!-- We'll want to do this eventually... Need to make it work in a
          non-instant-apply world. -->

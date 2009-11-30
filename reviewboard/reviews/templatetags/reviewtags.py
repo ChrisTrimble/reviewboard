@@ -129,6 +129,7 @@ def commentcounts(context, filediff, interfilediff=None):
                 'comment_id': comment.id,
                 'text': comment.text,
                 'line': comment.first_line,
+                'blockit': comment.blockit,
                 'num_lines': comment.num_lines,
                 'user': {
                     'username': review.user.username,

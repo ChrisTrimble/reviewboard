@@ -468,10 +468,16 @@ $.fn.commentDlg = function() {
     var saveButton = $("#comment_save", this)
         .click(function() {
             comment.setText(textField.val());
+            comment.blockit =  $("#id_blockit")[0].checked ? 1 : 0;
             comment.save();
             self.close();
         });
 
+    var blockCheck = $("#id_blockit")
+    	.click(function(){
+    		saveButton.attr("disabled", false);
+    	});
+    
     var textField    = $("#comment_text", draftForm)
         .keydown(function(e) { e.stopPropagation(); })
         .keypress(function(e) {
@@ -658,7 +664,9 @@ $.fn.commentDlg = function() {
                   '&reply_type=' + replyType + '">Reply</a>')
                     .appendTo(actions);
                 $("<pre/>").appendTo(item).text(this.text);
-
+                if(parseInt(this.blockit) == 1){
+                	$("<span class=gr/>").appendTo(item).text("Marked as Blocker");
+                }
                 item.appendTo(commentsList);
 
                 showComments = true;
@@ -703,6 +711,11 @@ $.fn.commentDlg = function() {
 
         comment = newComment;
         textField.val(comment.text);
+        if(parseInt(comment.blockit) == 1){
+        	$("#id_blockit")[0].checked=true
+        }else{
+        	$("#id_blockit")[0].checked=false
+        }
         dirty = false;
 
         /* Set the initial button states */
