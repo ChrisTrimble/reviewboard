@@ -1370,7 +1370,7 @@ def diff_line_comments(request, review_request_id, line, diff_revision,
 
         if action == "set":
             text = request.POST['text']
-            blockit = True if request.POST['blockit'] == "1" else False
+            blockit = (False, True)[request.POST['blockit'] == "1"]
 
             review, review_is_new = Review.objects.get_or_create(
                 review_request=review_request,
