@@ -104,7 +104,7 @@
                 null,
 {% endif %}
                 {{comment.first_line}}, {{comment.last_line}},
-                "{{comment.text}}"));
+                "{{comment.text}}","{{comment.blockit}}"));
         $("#edit-diff-comment-{{comment.id}}").click(function() {
             editor.inlineEditor("startEdit");
         });
