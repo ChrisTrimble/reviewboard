@@ -212,8 +212,7 @@ class ReviewManager(ConcurrencyManager):
         return master_review
     
     def get_all_pending_review(self, review_request):
-        """Gets pending reviews from all the users, order by user
-        """
+        """Gets pending reviews from all the users, order by user"""
         query = self.filter(review_request=review_request,
                             public=False,
                             base_reply_to__isnull=True)
