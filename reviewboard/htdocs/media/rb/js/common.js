@@ -226,6 +226,48 @@ $.fn.toggleStar = function(type, objid, default_) {
     });
 };
 
+$.fn.popUpDlg = function(options) {
+    options = $.extend({
+    	data: "",
+        title: "",
+        width: null,
+        box_id: "",
+        popUpDlgClass:"popupdlg",
+        titleClass:"popUpbox-title",
+        contentsClass:"",
+        buttonClass:""
+        
+    }, options);
+
+    return this.each(function() {
+        var self = $(this);
+
+        var box = $("<div/>")
+        	.attr("id",options.box_id)
+        	.addClass("dlgOpacity")
+            .addClass(options.popUpDlgClass)
+            .append(self)
+            .append(options.data)
+            .keypress(function(e) {
+    			e.stopPropagation();
+            });
+
+        if (options.width) {
+            box.width(options.width);
+        }
+
+        box.modalBox({
+        	fadeBackground:false,
+            title: options.title,
+            buttons: [],
+            modalBoxTitleClass: options.titleClass,
+            modalBoxContentsClass: options.contentsClass,
+            modalBoxButtonsClass: options.buttonClass
+        });
+
+    });
+};
+
 $(document).ready(function() {
     $('<div id="activity-indicator" />')
         .text("Loading...")

@@ -316,6 +316,29 @@ form table td.label {
   margin-left: 10px;
 }
 
+/****************************************************************************
+ * PopUp Dialogue
+ ****************************************************************************/
+.popupdlg {
+  padding-top: 4px;
+  color:white;
+  background-color:#000;
+  filter:alpha(opacity=70); /* IE's opacity*/
+  width:600px; 
+}
+
+.popUpbox-title {
+  background-color:black;
+  border-bottom: 1px #FFF solid;
+  margin: 0;
+  padding: 5px 10px 5px 5px;
+  font-size: 120%;
+  color:white;
+}
+.dlgOpacity {
+  filter:alpha(opacity=70); /* IE's opacity*/
+  opacity:.70; /* Firefox opacity*/
+}
 
 /****************************************************************************
  * Account page
