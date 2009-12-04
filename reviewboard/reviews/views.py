@@ -113,8 +113,7 @@ def review_detail(request, review_request_id,
         # If the review request is public and pending review and if the user
         # is logged in, mark that they've visited this review request.
         all_pending_reviews = \
-            review_request.get_all_pending_review().\
-                 exclude(user=request.user).iterator()
+            review_request.get_all_pending_review().exclude(user=request.user)
             
         if review_request.public and review_request.status == "P":
             visited, visited_is_new = ReviewRequestVisit.objects.get_or_create(
@@ -428,8 +427,7 @@ def diff(request, review_request_id, revision=None, interdiff_revision=None,
 
     if request.user.is_authenticated():
         all_pending_reviews = \
-            review_request.get_all_pending_review() \
-                 .exclude(user=request.user).iterator()
+            review_request.get_all_pending_review().exclude(user=request.user)
 
     repository = review_request.repository
 
