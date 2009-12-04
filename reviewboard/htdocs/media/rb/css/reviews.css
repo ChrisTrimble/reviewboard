@@ -858,7 +858,9 @@
 }
 
 #review-progress-banner .banner {
-  background: #FFFF99;
+  background: #FFFFAA;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
 }
 
 /****************************************************************************
