@@ -1,5 +1,13 @@
 {% extends "datagrid/datagrid.html" %}
 
+{% block link %}
+{% if display_rss_feeds%}
+<link rel="alternate" type="application/rss+xml" 
+  			title="RSS Feed for Review Request"
+  			href="/feeds/rss/users/{{username}}" />
+{% endif %}
+{% endblock %}
+
 {% block scripts-post %}
 {{block.super}}
 <script type="text/javascript" src="{{MEDIA_URL}}rb/js/common.js?{{MEDIA_SERIAL}}"></script>

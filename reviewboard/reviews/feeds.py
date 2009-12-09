@@ -88,7 +88,13 @@ class RssGroupReviewsFeed(BaseReviewFeed):
     def items(self, group):
         return ReviewRequest.objects.to_group(group).\
             order_by('-last_updated')[:20]
-
+    
+    def item_pubdate(self, item):
+        """
+        Takes an item, as returned by items(), and returns the item's pubdate.
+        The publication date of the item will be its submission date
+        """
+        return item.submittime
 
 # Atom feeds
 class AtomReviewsFeed(RssReviewsFeed):

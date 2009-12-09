@@ -56,6 +56,7 @@ MIDDLEWARE_CLASSES = (
     'reviewboard.admin.middleware.LoadSettingsMiddleware',
 
     'djblets.log.middleware.LoggingMiddleware',
+    'reviewboard.admin.middleware.AuthenticateFeedsMiddleware',
     'reviewboard.admin.middleware.CheckUpdatesRequiredMiddleware',
     'reviewboard.admin.middleware.X509AuthMiddleware',
 )
@@ -189,3 +190,6 @@ SESSION_COOKIE_PATH = SITE_ROOT
 
 # The list of directories that will be searched to generate a media serial.
 MEDIA_SERIAL_DIRS = ["admin", "djblets", "rb"]
+
+# Feeds Url
+FEEDS_URL = '/feeds/rss/'

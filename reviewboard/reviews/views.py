@@ -348,13 +348,19 @@ def submitter(request, username, template_name='reviews/datagrid.html'):
     """
     # Make sure the user exists
     get_object_or_404(User, username=username)
+    display_rss_feeds = False
 
     datagrid = ReviewRequestDataGrid(request,
         ReviewRequest.objects.from_user(username, status=None,
                                         with_counts=True),
         _("%s's review requests") % username)
-
-    return datagrid.render_to_response(template_name)
+    
+    if request.user.is_authenticated():
+        display_rss_feeds = True
+    
+    return datagrid.render_to_response(template_name, extra_context = {
+        'display_rss_feeds': display_rss_feeds,
+        'username':username})
 
 
 def _query_for_diff(review_request, user, revision, query_extra=None):
