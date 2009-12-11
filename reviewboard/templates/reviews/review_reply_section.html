@@ -4,7 +4,7 @@
    <ol class="reply-comments">
     {% reply_list review comment context_type context_id %}
    </ol>
-{% if user.is_authenticated %}
+{% if user.is_authenticated and display_add_comment %}
    <ul class="controls">
     <li><a href="#" id="add_{{context_type}}_{{comment.id}}" class="add_comment_link">{% trans "Add comment" %}</a></li>
    </ul>

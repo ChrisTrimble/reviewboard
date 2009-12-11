@@ -1,1 +1,27 @@
+{% load djblets_deco %}
+{% load reviewtags %}
+
 {{obj.description|escape}}
+
+{% for entry in obj.reviews|get_comments_order_by %}
+<a name="review{{entry.review.id}}"></a>
+<div id="review{{entry.review.id}}">
+{%   box "review" %}
+<div style="background-color:#EBF3F6; border-left: 2px font-size: 10pt; padding-left: 5px;">
+   <pre>{{entry.review.body_top|escape}}</pre>
+   {% reply_section entry.review "" "body_top" "rcbt" 0 %}
+{% for comment in entry.context.comment_entries %}
+<blockquote style="margin-left: 1em; border-left: 2px solid #d0d0d0; padding-left: 10px;">
+  {{comment.html|safe}}
+  <p>{{comment.comment.reply_to.text}}</p>
+ </blockquote>
+ <p>{{comment.text|escape}}</p>
+{% endfor %}
+{% if entry.review.body_bottom %}
+   <pre>{{entry.review.body_bottom|escape}}</pre>
+   {% reply_section entry.review "" "body_bottom" "rcbb" 0 %}
+  {% endif %}
+</div><!-- main -->
+{% endbox %}
+</div><!-- review{{entry.review.id}} -->
+{% endfor %}

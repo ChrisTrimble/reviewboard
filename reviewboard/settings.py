@@ -56,7 +56,6 @@ MIDDLEWARE_CLASSES = (
     'reviewboard.admin.middleware.LoadSettingsMiddleware',
 
     'djblets.log.middleware.LoggingMiddleware',
-    'reviewboard.admin.middleware.AuthenticateFeedsMiddleware',
     'reviewboard.admin.middleware.CheckUpdatesRequiredMiddleware',
     'reviewboard.admin.middleware.X509AuthMiddleware',
 )

@@ -10,7 +10,6 @@ from django.core.handlers.wsgi import WSGIRequest
 from reviewboard.admin.checks import check_updates_required
 from reviewboard.admin.siteconfig import auth_backend_map, load_site_config
 from reviewboard.admin.views import manual_updates_required
-from reviewboard.reviews.errors import HttpResponseNotAuthorized
 from reviewboard.webapi.json import service_not_configured
 
 
@@ -89,16 +88,4 @@ class X509AuthMiddleware(object):
                     auth.login(request, user)
 
         return None
-
-class AuthenticateFeedsMiddleware(object):
-    """
-    Middleware that authenticates a user using the RSS Feeds
-
-    Accessing rss feeds without getting logged in, raised an authentication 
-    (Http401) error.
-    """
-    def process_request(self, request):
-        path_info = request.META['PATH_INFO']
-        if path_info.startswith(settings.FEEDS_URL) and \
-            (not request.user.is_authenticated()):
-                raise HttpResponseNotAuthorized("You are not authorized to view this page")
+    

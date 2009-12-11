@@ -14,6 +14,7 @@ from reviewboard.accounts.models import Profile
 from reviewboard.diffviewer.models import DiffSet
 from reviewboard.reviews.models import Comment, Group, ReviewRequest, \
                                        ScreenshotComment
+import reviewboard.reviews.views
 
 
 register = template.Library()
@@ -280,7 +281,8 @@ def reply_list(context, review, comment, context_type, context_id):
 
 @register.inclusion_tag('reviews/review_reply_section.html',
                         takes_context=True)
-def reply_section(context, review, comment, context_type, context_id):
+def reply_section(context, review, comment, context_type, context_id, 
+                  display_add_comment=True):
     """
     Renders a template for displaying a reply.
 
@@ -299,7 +301,8 @@ def reply_section(context, review, comment, context_type, context_id):
         'comment': comment,
         'context_type': context_type,
         'context_id': context_id,
-        'user': context.get('user', None)
+        'user': context.get('user', None),
+        'display_add_comment':display_add_comment
     }
 
 
@@ -530,3 +533,32 @@ def render_star(user, obj):
         'user': user,
         'MEDIA_URL': settings.MEDIA_URL,
     })
+
+@register.filter
+def get_comments_order_by(reviews):
+    """
+    Get all the reviews, in order_by of their comments
+    views.build_diff_comment_fragments returns all filediff and their
+    respective comment html encoding 
+    """
+    entries = []
+    for temp_review in reviews.exclude(base_reply_to__isnull=False):
+        temp_review.ordered_comments = \
+            temp_review.comments.order_by('filediff', 'first_line')
+
+        extra_context = {
+            'user': temp_review.user,
+            'review': temp_review,
+        }
+        
+        has_error, extra_context['comment_entries'] = \
+        reviewboard.reviews.views.build_diff_comment_fragments(
+            temp_review.ordered_comments, extra_context,
+            "notifications/email_diff_comment_fragment.html")
+        
+        entries.append({
+            'review': temp_review,
+            'timestamp': temp_review.timestamp,
+            'context': extra_context,
+        })
+    return entries 

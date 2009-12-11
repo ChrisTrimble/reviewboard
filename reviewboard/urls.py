@@ -2,6 +2,8 @@ import os.path
 
 from django.conf import settings
 from django.conf.urls.defaults import patterns, include, url
+from django.contrib.auth.decorators import login_required
+from django.contrib.syndication.views import feed
 from django.contrib import admin
 
 from reviewboard.reviews.feeds import RssReviewsFeed, AtomReviewsFeed, \
@@ -76,7 +78,7 @@ urlpatterns += patterns('reviewboard.reviews.views',
 # django.contrib
 urlpatterns += patterns('django.contrib',
    # Feeds
-    url(r'^feeds/rss/(?P<url>.*)/$', 'syndication.views.feed',
+    url(r'^feeds/rss/(?P<url>.*)/$', login_required(feed),
         {'feed_dict': rss_feeds},
         name="rss-feed"),
     url(r'^feeds/atom/(?P<url>.*)/$', 'syndication.views.feed',
