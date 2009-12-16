@@ -1,4 +1,6 @@
 {% load djblets_deco %}
+{% load djblets_utils %}
+{% load i18n %}
 {% load reviewtags %}
 
 {{obj.description|escape}}
@@ -6,22 +8,28 @@
 {% for entry in obj.reviews|get_comments_order_by %}
 <a name="review{{entry.review.id}}"></a>
 <div id="review{{entry.review.id}}">
-{%   box "review" %}
-<div style="background-color:#EBF3F6; border-left: 2px font-size: 10pt; padding-left: 5px;">
-   <pre>{{entry.review.body_top|escape}}</pre>
-   {% reply_section entry.review "" "body_top" "rcbt" 0 %}
+{% box "review" %}
+<div style="font-face:courier;font-size:1em;">
+  <div  style="background-color:#EBF3F6; border-left:2px; padding-left:3px;">
+  	<div style="float:left"><a href="{% url user entry.review.user %}">{{entry.review.user|user_displayname}}</a></div>
+  	<div style="text-align:right;">{% blocktrans with entry.review.timestamp|timesince as timestamp_since  and entry.review.timestamp|date:"F jS, Y, P" as timestamp_date %}Posted {{ timestamp_since }} ago ({{ timestamp_date }}){% endblocktrans %}</div>
+  </div>
+  <div style="background-color:#F2F2F2; border-left:2px; padding-left:3px;">
+  	<div style="padding-left: 1em;padding-top: 1em;">{{entry.review.body_top|escape}}</div>
+   	  {% reply_section entry.review "" "body_top" "rcbt" 0 %}
 {% for comment in entry.context.comment_entries %}
-<blockquote style="margin-left: 1em; border-left: 2px solid #d0d0d0; padding-left: 10px;">
-  {{comment.html|safe}}
-  <p>{{comment.comment.reply_to.text}}</p>
- </blockquote>
- <p>{{comment.text|escape}}</p>
+	<blockquote style="margin-left: 1.2em; border-left: 2px solid #d0d0d0; padding-left: 7px;">
+  	  {{comment.html|safe}}
+  	  <div style="padding-top:1em;padding-left:3em;">{{comment.comment.text}}</div>
+  	  {% reply_section entry.review comment.comment "comment" "rc" 0 %}
+ 	</blockquote>
 {% endfor %}
 {% if entry.review.body_bottom %}
-   <pre>{{entry.review.body_bottom|escape}}</pre>
-   {% reply_section entry.review "" "body_bottom" "rcbb" 0 %}
-  {% endif %}
-</div><!-- main -->
+  <div style="padding-left:1em;padding-top:.5em;">{{entry.review.body_bottom|escape}}</div>
+    {% reply_section entry.review "" "body_bottom" "rcbb" 0 %}
+{% endif %}
+  </div>
+</div><!-- box "review" -->
 {% endbox %}
 </div><!-- review{{entry.review.id}} -->
 {% endfor %}

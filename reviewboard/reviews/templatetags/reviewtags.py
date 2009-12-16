@@ -275,7 +275,7 @@ def reply_list(context, review, comment, context_type, context_id):
         return s
     else:
         raise TemplateSyntaxError, "Invalid context type passed"
-
+    
     return s
 
 
@@ -550,12 +550,11 @@ def get_comments_order_by(reviews):
             'user': temp_review.user,
             'review': temp_review,
         }
-        
         has_error, extra_context['comment_entries'] = \
         reviewboard.reviews.views.build_diff_comment_fragments(
             temp_review.ordered_comments, extra_context,
             "notifications/email_diff_comment_fragment.html")
-        
+
         entries.append({
             'review': temp_review,
             'timestamp': temp_review.timestamp,

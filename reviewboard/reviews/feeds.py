@@ -68,6 +68,7 @@ class RssSubmitterReviewsFeed(BaseReviewFeed):
         return ReviewRequest.objects.to_user_directly(submitter.username).\
             order_by('-last_updated')[:20]
 
+
 class RssGroupReviewsFeed(BaseReviewFeed):
     def get_object(self, bits):
         if len(bits) != 1:
