@@ -211,3 +211,14 @@ class ReviewManager(ConcurrencyManager):
             review.delete()
 
         return master_review
+
+    def get_all_published_review(self, review_request, user):
+        """Gets published reviews from all the users, order by submitted 
+        timestamp
+        """
+        query_user = User.objects.get(username=user)
+        query = Q(review_request__starred_by__user=query_user) | Q(review_request__target_people=query_user)
+
+        return self.filter(query, public=True,
+                           review_request=review_request,
+                           base_reply_to__isnull=True).order_by("-timestamp")

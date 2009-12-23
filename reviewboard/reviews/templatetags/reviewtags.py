@@ -534,30 +534,62 @@ def render_star(user, obj):
         'MEDIA_URL': settings.MEDIA_URL,
     })
 
+
 @register.filter
-def get_comments_order_by(reviews):
+def get_feed_description(feed_obj):
+    return get_review_request(feed_obj).description
+
+
+@register.filter
+def get_feed_summary(feed_obj):
+    return get_review_request(feed_obj).summary
+
+
+@register.filter
+def get_comments_order_by(feed_obj):
+    entries = []
+    if isinstance(feed_obj, ReviewRequest) :
+        for temp_review in feed_obj.reviews.exclude(base_reply_to__isnull=False):
+            get_review_entry(entries, temp_review)
+    else :
+        get_review_entry(entries, feed_obj)
+
+    return entries 
+
+
+def get_review_entry(entries, temp_review):
     """
-    Get all the reviews, in order_by of their comments
+    Get all the in order_by of their comments
     views.build_diff_comment_fragments returns all filediff and their
     respective comment html encoding 
     """
-    entries = []
-    for temp_review in reviews.exclude(base_reply_to__isnull=False):
-        temp_review.ordered_comments = \
-            temp_review.comments.order_by('filediff', 'first_line')
-
-        extra_context = {
+    temp_review.ordered_comments = temp_review.comments.\
+                                        order_by('filediff', 'first_line')
+    
+    extra_context = {
             'user': temp_review.user,
             'review': temp_review,
-        }
-        has_error, extra_context['comment_entries'] = \
+    }
+        
+    has_error, extra_context['comment_entries'] = \
         reviewboard.reviews.views.build_diff_comment_fragments(
             temp_review.ordered_comments, extra_context,
-            "notifications/email_diff_comment_fragment.html")
+            "notifications/email_diff_comment_fragment.html")    
 
-        entries.append({
+    entries.append({
             'review': temp_review,
             'timestamp': temp_review.timestamp,
             'context': extra_context,
-        })
-    return entries 
+    })
+    
+    return entries
+
+
+def get_review_request(feed_obj):
+    """If feed_obj is an instance of review object,
+    return review.review_request
+    """
+    if isinstance(feed_obj, ReviewRequest) :
+        return feed_obj
+    else:
+        return feed_obj.review_request

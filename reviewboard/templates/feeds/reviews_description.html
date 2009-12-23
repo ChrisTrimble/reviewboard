@@ -3,9 +3,9 @@
 {% load i18n %}
 {% load reviewtags %}
 
-{{obj.description|escape}}
+{{obj|get_feed_description}}
 
-{% for entry in obj.reviews|get_comments_order_by %}
+{% for entry in obj|get_comments_order_by %}
 <a name="review{{entry.review.id}}"></a>
 <div id="review{{entry.review.id}}">
 {% box "review" %}
