@@ -1370,7 +1370,7 @@ def diff_line_comments(request, review_request_id, line, diff_revision,
 
         if action == "set":
             text = request.POST['text']
-            blockit = (False, True)[request.POST['blockit'] == "1"]
+            blocks_submission = (request.POST['blocksSubmission'] == "1")
 
             review, review_is_new = Review.objects.get_or_create(
                 review_request=review_request,
@@ -1390,7 +1390,7 @@ def diff_line_comments(request, review_request_id, line, diff_revision,
                     first_line=line)
 
             comment.text = text
-            comment.blockit = blockit
+            comment.blocks_submission = blocks_submission
             comment.num_lines = num_lines
             comment.timestamp = datetime.now()
             comment.save()

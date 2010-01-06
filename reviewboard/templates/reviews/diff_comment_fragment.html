@@ -19,8 +19,8 @@
 {% else %}
      (Diff revision {{comment.filediff.diffset.revision}})
 {% endif %}
-{% if comment.blockit %}
-	<span class="gr">{% trans "Marked as Blocker" %}</span>
+{% if comment.blocks_submission %}
+    <span class="gr">{% trans "Marked as Blocker" %}</span>
 {% endif %}
     </span>
    </th>

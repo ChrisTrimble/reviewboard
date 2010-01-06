@@ -468,14 +468,14 @@ $.fn.commentDlg = function() {
     var saveButton = $("#comment_save", this)
         .click(function() {
             comment.setText(textField.val());
-            comment.blockit =  $("#id_blockit")[0].checked ? 1 : 0;
+            comment.blocksSubmission = $("#id_blockit")[0].checked ? 1 : 0;
             comment.save();
             self.close();
         });
 
     var blockCheck = $("#id_blockit")
         .click(function(){
-                saveButton.attr("disabled", false);
+            saveButton.attr("disabled", false);
         });
 
     var textField    = $("#comment_text", draftForm)
@@ -664,9 +664,11 @@ $.fn.commentDlg = function() {
                   '&reply_type=' + replyType + '">Reply</a>')
                     .appendTo(actions);
                 $("<pre/>").appendTo(item).text(this.text);
-                if(parseInt(this.blockit) == 1) {
-                        $("<span class=gr/>")
-                         .appendTo(item).text("Marked as Blocker");
+                if (this.blocksSubmission == 1) {
+                   $("<span/>")
+                    .attr("class", "gr")
+                    .appendTo(item)
+                    .text("Marked as Blocker");
                 }
                 item.appendTo(commentsList);
 
@@ -712,11 +714,7 @@ $.fn.commentDlg = function() {
 
         comment = newComment;
         textField.val(comment.text);
-        if(parseInt(comment.blockit) == 1) {
-                $("#id_blockit")[0].checked=true
-        } else {
-                $("#id_blockit")[0].checked=false
-        }
+        $("#id_blockit")[0].checked = (comment.blockIt == 1);
         dirty = false;
 
         /* Set the initial button states */

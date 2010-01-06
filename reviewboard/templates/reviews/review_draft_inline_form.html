@@ -74,9 +74,10 @@
     <pre class="editable comment-editable" id="diff-comment-{{comment.id}}">{{comment.text|escape}}</pre>
 
 	<script type="text/javascript">
-        if(parseInt({{comment.blockit}}) == 1) {
-            $("#id_shipit").attr("disabled",true);
-        }
+     if({{comment.blocks_submission}} == 1) {
+      $("#id_shipit")
+       .attr("disabled",true);
+     }
 	</script>
 {% comment %}
     <!-- We'll want to do this eventually... Need to make it work in a
@@ -103,7 +104,7 @@
                 null,
 {% endif %}
                 {{comment.first_line}}, {{comment.last_line}},
-                "{{comment.text}}","{{comment.blockit}}"));
+                "{{comment.text}}", "{{comment.blocks_submission}}"));
         $("#edit-diff-comment-{{comment.id}}").click(function() {
             editor.inlineEditor("startEdit");
         });

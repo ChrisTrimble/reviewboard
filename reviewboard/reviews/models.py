@@ -906,7 +906,7 @@ class Comment(models.Model):
                                             null=True)
 
     last_line = property(lambda self: self.first_line + self.num_lines - 1)
-    blockit = models.BooleanField(_("blockit"), default=False)
+    blocks_submission = models.BooleanField(_("blocks submission"), default=False)
 
     # Set this up with a ConcurrencyManager to help prevent race conditions.
     objects = ConcurrencyManager()
