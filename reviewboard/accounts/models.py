@@ -68,6 +68,16 @@ class Profile(models.Model):
     submitter_columns = models.CharField(max_length=256, blank=True)
     group_columns = models.CharField(max_length=256, blank=True)
 
+    # Indicate whether user wishes to receive reminder notification
+    # for non submitted and marked as ship-it review request
+    reminder_notification = models.BooleanField(default=True, null=False,
+        verbose_name=_("reminder notification"))
+    
+    # Days to wait before sending a Notification Reminder for 
+    # non submitted review request
+    reminder_notification_delay = models.IntegerField(_("reminder \
+        notification delay"), default=3, null=True)
+
     # A list of starred review requests. This allows users to monitor a
     # review request and receive e-mails on updates without actually being
     # on the reviewer list or commenting on the review. This is similar to

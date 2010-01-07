@@ -89,6 +89,14 @@ class GeneralSettingsForm(SiteSettingsForm):
         required=False,
         widget=forms.TextInput(attrs={'size': '50'}))
 
+    reminder_notification = forms.BooleanField(
+        help_text=_("Send reminder e-mails for review requests submission."),
+        required=False)
+
+    reminder_notification_delay = forms.IntegerField(
+        help_text=_("Notification Delays (in Day)"),
+        required=False)
+
     def load(self):
         # First set some sane defaults.
         domain_method = self.siteconfig.get("site_domain_method")
@@ -149,6 +157,11 @@ class GeneralSettingsForm(SiteSettingsForm):
                 'classes': ('wide',),
                 'title':   _("Search"),
                 'fields':  ('search_enable', 'search_index_file'),
+            },
+            {
+                'classes': ('wide',),
+                'title':   _("Reminder Notification"),
+                'fields':  ('reminder_notification', 'reminder_notification_delay'),
             },
         )
 

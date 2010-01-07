@@ -63,6 +63,23 @@
   {{form.groups}}
  </div>
 {% endbox %}
+{% box "prefsgroup" %}
+ <h1 class="title">{% trans "Reminder Notification" %}</h1>
+ <div class="main">
+ {{form.reminder_notification}} {{form.reminder_notification.label}} 
+  <table>
+   <tr>
+	<td>
+	 <label>{% trans "Remind me after:" %}</label>
+	</td>
+    <td>  
+     {{form.reminder_notification_delay}}
+     <label>{% trans "Days" %}</label>
+    </td>
+   </tr>
+  </table>
+ </div>
+{% endbox %}
  <div class="prefsbuttons">
   <input type="submit" value="{% trans "Save Preferences" %}" />
  </div>

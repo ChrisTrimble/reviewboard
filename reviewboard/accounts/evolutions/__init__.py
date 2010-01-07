@@ -1,0 +1,3 @@
+SEQUENCE = [
+    'reminder_notification',
+]

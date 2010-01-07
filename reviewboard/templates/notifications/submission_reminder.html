@@ -1,0 +1,19 @@
+{% extends "notifications/email_base.html" %}
+{% load reviewtags %}
+{% load djblets_utils %}
+
+{% block content %}
+
+<table bgcolor="#fefadf" width="100%" cellspacing="0" cellpadding="8" style="background-image: url('{{domain_method}}://{{domain}}{{MEDIA_URL}}rb/images/review_request_box_top_bg.png'); background-position: left top; background-repeat: repeat-x; border: 1px black solid;">
+ <tr>
+  <td>
+   <div>
+   <p>Your review request submission has been processed and needs to be submitted. 
+   	This submission is pending for {{ pending_days }} days
+   </p>
+   </div>
+  </td>
+ </tr>
+</table> 
+
+{% endblock content %}

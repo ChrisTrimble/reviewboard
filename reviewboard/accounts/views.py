@@ -69,6 +69,10 @@ def user_preferences(request, template_name='accounts/prefs.html'):
             profile.first_time_setup_done = True
             profile.syntax_highlighting = \
                 form.cleaned_data['syntax_highlighting']
+            profile.reminder_notification = \
+                form.cleaned_data['reminder_notification']
+            profile.reminder_notification_delay = \
+                form.cleaned_data['reminder_notification_delay']
             profile.save()
 
             return HttpResponseRedirect(redirect_to)
@@ -81,6 +85,8 @@ def user_preferences(request, template_name='accounts/prefs.html'):
             'email': request.user.email,
             'syntax_highlighting': profile.syntax_highlighting,
             'groups': [g.id for g in request.user.review_groups.all()],
+            'reminder_notification': profile.reminder_notification,
+            'reminder_notification_delay': profile.reminder_notification_delay
         })
 
     return render_to_response(template_name, RequestContext(request, {

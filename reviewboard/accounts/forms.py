@@ -19,6 +19,9 @@ class PreferencesForm(forms.Form):
     email = forms.EmailField()
     password1 = forms.CharField(required=False, widget=widgets.PasswordInput())
     password2 = forms.CharField(required=False, widget=widgets.PasswordInput())
+    reminder_notification = forms.BooleanField(required=False,
+        label=_("Enable e-mail notification for review request not submitted"))
+    reminder_notification_delay = forms.IntegerField(required=False)
 
     def __init__(self, *args, **kwargs):
         forms.Form.__init__(self, *args, **kwargs)

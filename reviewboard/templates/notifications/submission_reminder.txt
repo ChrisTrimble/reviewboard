@@ -1,0 +1,7 @@
+-----------------------------------------------------------
+This is an automatically generated e-mail. To reply, visit:
+{{domain_method}}://{{domain}}{{review_request.get_absolute_url}}
+-----------------------------------------------------------
+
+Your review request submission is pending for {{ pending_days }} number of Days, 
+Please submit your request
