@@ -169,6 +169,7 @@ class ReviewManager(ConcurrencyManager):
         query = query.order_by("timestamp")
 
         reviews = list(query)
+
         if len(reviews) == 0:
             return None
         elif len(reviews) == 1:
@@ -210,11 +211,11 @@ class ReviewManager(ConcurrencyManager):
             review.delete()
 
         return master_review
-    
-    def get_all_pending_review(self, review_request):
-        """Gets pending reviews from all the users, order by user"""
+
+    def get_pending_reviews(self, review_request):
+        """Gets pending reviews from all the users, ordered by user"""
         query = self.filter(review_request=review_request,
                             public=False,
                             base_reply_to__isnull=True)
-        
+
         return query.order_by("user")

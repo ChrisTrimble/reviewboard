@@ -418,6 +418,7 @@ $.extend(RB.Review.prototype, {
             success: options.success
         });
     },
+
     _apiCall: function(options) {
         var self = this;
 

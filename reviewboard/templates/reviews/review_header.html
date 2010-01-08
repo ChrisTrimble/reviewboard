@@ -1,17 +1,19 @@
 {% load i18n %}
 {% load djblets_utils %}
 
-<div id="review-progress-banner"{% if not all_pending_reviews %} style="display: none;"{% endif %}>
- <div class="banner">
-  <h1>{% trans "Review is in progress by: " %}
-  {% for review in all_pending_reviews %}
-  		{% if forloop.first %}{{ review.user|user_displayname }}
-  		{% else %}, {{ review.user|user_displayname }}
-  		{% endif %}
-  {% endfor %}
+{% if pending_reviews %}
+ <div id="review-progress-banner">
+  <div class="banner">
+   <h1>{% trans "Review is in progress by: " %}
+    {% for review in pending_reviews %}
+     {% if forloop.first %}{{ review.user|user_displayname }}
+     {% else %}, {{ review.user|user_displayname }}
+     {% endif %}
+    {% endfor %}
   </h1>
  </div>
 </div>
+{% endif %}
 
 {% ifequal review_request.status 'S' %}
 <div class="banner" id="submitted-banner">
