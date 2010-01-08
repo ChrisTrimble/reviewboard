@@ -115,7 +115,6 @@ def review_detail(request, review_request_id,
         pending_reviews = \
             review_request.get_pending_reviews().exclude(user=request.user)
 
-        print "pending_review : %s"%pending_reviews
         if review_request.public and review_request.status == "P":
             visited, visited_is_new = ReviewRequestVisit.objects.get_or_create(
                 user=request.user, review_request=review_request)
