@@ -1047,7 +1047,7 @@ def review_draft_save(request, review_request_id, publish=False):
 def review_draft_delete(request, review_request_id):
     review_request = get_object_or_404(ReviewRequest, pk=review_request_id)
     review = review_request.get_pending_review(request.user)
-
+    
     if review:
         review.delete()
         return WebAPIResponse(request)

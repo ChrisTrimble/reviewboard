@@ -106,12 +106,15 @@ def review_detail(request, review_request_id,
     """
     review_request = get_object_or_404(ReviewRequest, pk=review_request_id)
 
+    all_pending_reviews = None
     reviews = review_request.get_public_reviews()
     review = review_request.get_pending_review(request.user)
-
     if request.user.is_authenticated():
         # If the review request is public and pending review and if the user
         # is logged in, mark that they've visited this review request.
+        all_pending_reviews = \
+            review_request.get_all_pending_review().exclude(user=request.user)
+            
         if review_request.public and review_request.status == "P":
             visited, visited_is_new = ReviewRequestVisit.objects.get_or_create(
                 user=request.user, review_request=review_request)
@@ -216,7 +219,6 @@ def review_detail(request, review_request_id,
         })
 
     entries.sort(key=lambda item: item['timestamp'])
-
     response = render_to_response(template_name, RequestContext(request, {
         'draft': draft,
         'review_request': review_request,
@@ -229,6 +231,7 @@ def review_detail(request, review_request_id,
         'upload_screenshot_form': UploadScreenshotForm(),
         'scmtool': repository.get_scmtool(),
         'PRE_CREATION': PRE_CREATION,
+        'all_pending_reviews': all_pending_reviews,
     }))
     set_etag(response, etag)
 
@@ -404,6 +407,7 @@ def diff(request, review_request_id, revision=None, interdiff_revision=None,
     review_request = get_object_or_404(ReviewRequest, pk=review_request_id)
     diffset = _query_for_diff(review_request, request.user, revision)
 
+    all_pending_reviews = None
     interdiffset = None
     interdiffset_id = None
     review = None
@@ -420,6 +424,10 @@ def diff(request, review_request_id, revision=None, interdiff_revision=None,
     # current user.
     review = review_request.get_pending_review(request.user)
     draft = review_request.get_draft(request.user)
+
+    if request.user.is_authenticated():
+        all_pending_reviews = \
+            review_request.get_all_pending_review().exclude(user=request.user)
 
     repository = review_request.repository
 
@@ -446,6 +454,7 @@ def diff(request, review_request_id, revision=None, interdiff_revision=None,
         'upload_screenshot_form': UploadScreenshotForm(),
         'scmtool': repository.get_scmtool(),
         'last_activity_time': last_activity_time,
+        'all_pending_reviews': all_pending_reviews,
         'specific_diff_requested': revision is not None or
                                    interdiff_revision is not None,
     }, template_name)
