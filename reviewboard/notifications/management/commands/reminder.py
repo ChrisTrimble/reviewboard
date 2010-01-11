@@ -28,7 +28,14 @@ class Command(NoArgsCommand):
         Sends an reminder e-mail to the review request submitter, if
         recieves a ship-it and still not submitted
         """
+        current_site = Site.objects.get_current()
+        siteconfig = current_site.config.get()
         queryset = ReviewRequest.objects.public()
+
+        if not siteconfig.get('reminder_notification'):
+            print "Reminder notification couldn't be sent"
+            print "Administrator has disabled reminder notification"
+            return
 
         for review_request in queryset:
             submitter = review_request.submitter
@@ -55,13 +62,13 @@ class Command(NoArgsCommand):
                                         reminder_notification_delay):
                     self.send_reminder_mail(review_request, time_delta.days,
                                      'notifications/submission_reminder.txt',
-                                     'notifications/submission_reminder.html')
+                                     'notifications/submission_reminder.html',
+                                     siteconfig)
 
     def send_reminder_mail(self, review_request, pending_days,
-                           text_template_name, html_template_name):
+                           text_template_name, html_template_name, siteconfig):
 
         subject = "[Submission Reminder]: " + review_request.summary
-        current_site = Site.objects.get_current()
 
         from_email = self.options.from_email
 
@@ -72,7 +79,6 @@ class Command(NoArgsCommand):
             submitter = review_request.submitter
             recipients.add(get_email_address_for_user(submitter))
 
-        siteconfig = current_site.config.get()
         domain_method = siteconfig.get("site_domain_method")
 
         context = {}
