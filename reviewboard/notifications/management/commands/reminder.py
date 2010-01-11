@@ -63,10 +63,11 @@ class Command(NoArgsCommand):
                     self.send_reminder_mail(review_request, time_delta.days,
                                      'notifications/submission_reminder.txt',
                                      'notifications/submission_reminder.html',
-                                     siteconfig)
+                                     siteconfig, current_site)
 
     def send_reminder_mail(self, review_request, pending_days,
-                           text_template_name, html_template_name, siteconfig):
+                           text_template_name, html_template_name,
+                           siteconfig, current_site):
 
         subject = "[Submission Reminder]: " + review_request.summary
 
