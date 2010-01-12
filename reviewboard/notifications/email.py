@@ -241,7 +241,9 @@ def mail_review_request(user, review_request, changedesc=None):
 
     review_request.time_emailed = datetime.now()
     review_request.email_message_id = \
-        send_review_mail(user, review_request, subject, reply_message_id,
+        send_review_mail(user, review_request,
+                         update_subject(subject, review_request),
+                         reply_message_id,
                          extra_recipients,
                          'notifications/review_request_email.txt',
                          'notifications/review_request_email.html',
@@ -256,6 +258,7 @@ def mail_review(user, review):
     if not review_request.public:
         return
 
+    subject = "Re: Review Request: %s" % review_request.summary
     review.ordered_comments = \
         review.comments.order_by('filediff', 'first_line')
 
@@ -272,7 +275,8 @@ def mail_review(user, review):
     review.email_message_id = \
         send_review_mail(user,
                          review_request,
-                         u"Re: Review Request: %s" % review_request.summary,
+                         update_subject(subject, review_request,
+                                        review=True, ship_it=review.ship_it),
                          review_request.email_message_id,
                          None,
                          'notifications/review_email.txt',
@@ -292,6 +296,7 @@ def mail_reply(user, reply):
     if not review_request.public:
         return
 
+    subject = "Re: Review Request: %s" % review_request.summary
     extra_context = {
         'user': user,
         'review': review,
@@ -307,7 +312,8 @@ def mail_reply(user, reply):
     reply.email_message_id = \
         send_review_mail(user,
                          review_request,
-                         u"Re: Review Request: %s" % review_request.summary,
+                         update_subject(subject, review_request,
+                                             review_reply=True),
                          review.email_message_id,
                          harvest_people_from_review(review),
                          'notifications/reply_email.txt',
@@ -315,3 +321,34 @@ def mail_reply(user, reply):
                          extra_context)
     reply.time_emailed = datetime.now()
     reply.save()
+
+
+def update_subject(subject, review_request, review=False,
+                        review_reply=False, ship_it=False):
+    """
+    Creates a subject line for a mail generated for a review request, review
+    or a review-reply.
+    Checks site-configuration mail subject settings, includes a group name,
+    review/review-reply or ship-it in a subject line, if selected.
+    """
+    add_to_subject = ""
+    current_site = Site.objects.get_current()
+    siteconfig = current_site.config.get()
+
+    groups = review_request.target_groups.all()
+    if (siteconfig.get("specify_group_name") and groups):
+        groups_display_name =\
+             ','.join(map(lambda a: a.display_name, groups))
+
+        add_to_subject += "[%s]" % groups_display_name
+
+    if siteconfig.get("specify_review_update"):
+        if review:
+            add_to_subject += "[Review]"
+        elif review_reply:
+            add_to_subject += "[Review-Update]"
+
+    if ship_it and siteconfig.get("specify_ship_it"):
+        add_to_subject += "[Ship-It]"
+
+    return "%s %s" % (add_to_subject, subject)

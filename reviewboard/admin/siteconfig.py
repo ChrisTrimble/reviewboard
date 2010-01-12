@@ -133,6 +133,9 @@ defaults.update({
     'mail_send_review_mail':               False,
     'search_enable':                       False,
     'site_domain_method':                  'http',
+    'specify_group_name':                  True,
+    'specify_review_update':               True,
+    'specify_ship_it':                     True,
 
     # TODO: Allow relative paths for the index file later on.
     'search_index_file': os.path.join(settings.REVIEWBOARD_ROOT,

@@ -535,6 +535,16 @@ class EMailSettingsForm(SiteSettingsForm):
         label=_("Use TLS for authentication"),
         required=False)
 
+    specify_group_name = forms.BooleanField(
+        label=_("Include Group Name"),
+        required=False)
+    specify_review_update = forms.BooleanField(
+        label=_("Include Review/Comment"),
+        required=False)
+    specify_ship_it = forms.BooleanField(
+        label=_("Include Ship-It"),
+        required=False)
+
     def save(self):
         super(EMailSettingsForm, self).save()
 
@@ -544,6 +554,26 @@ class EMailSettingsForm(SiteSettingsForm):
 
     class Meta:
         title = _("E-Mail Settings")
+
+        fieldsets = (
+            {
+                'classes': ('wide',),
+                'title':   _("General Settings"),
+                'fields':  ('mail_send_review_mail',
+                            'mail_host',
+                            'mail_port',
+                            'mail_host_user',
+                            'mail_host_password',
+                            'mail_use_tls'),
+            },
+            {
+                'classes': ('wide',),
+                'title':   _("Subject Settings"),
+                'fields':  ('specify_group_name',
+                            'specify_review_update',
+                            'specify_ship_it'),
+            },
+        )
 
 
 class DiffSettingsForm(SiteSettingsForm):
