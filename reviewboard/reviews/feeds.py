@@ -86,7 +86,7 @@ class RssSubmitterReviewsFeed(BaseReviewFeed):
                 feeds_objs.append(review_request)
             else :
                 review_list =  Review.objects. \
-                    get_all_published_review(review_request, submitter.username)
+                    get_published_reviews(review_request, submitter.username)
                 for review in review_list :
                     feeds_objs.append(review)
         
