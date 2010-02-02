@@ -213,7 +213,7 @@ class ReviewManager(ConcurrencyManager):
         return master_review
 
     def get_published_reviews(self, review_request, user):
-        """Gets published reviews from all the users, order by submitted 
+        """Gets all published reviews of the users, order by submitted 
         timestamp
         """
         query_user = User.objects.get(username=user)
