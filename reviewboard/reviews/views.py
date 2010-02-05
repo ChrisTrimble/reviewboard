@@ -109,6 +109,7 @@ def review_detail(request, review_request_id,
     pending_reviews = None
     reviews = review_request.get_public_reviews()
     review = review_request.get_pending_review(request.user)
+
     if request.user.is_authenticated():
         # If the review request is public and pending review and if the user
         # is logged in, mark that they've visited this review request.
